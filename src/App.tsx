@@ -1,7 +1,7 @@
 import './App.css'
-import {Routing} from "@/common/routing/Routing.tsx";
 import {Header} from "@/common/components/Header/Header.tsx";
 import s from '@/app/App.module.css'
+import {Routing} from "@/common/routing";
 
 export function App() {
   return (
