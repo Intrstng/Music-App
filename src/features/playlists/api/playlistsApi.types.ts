@@ -62,9 +62,8 @@ export type CreatePlaylistResponse = {
 }
 
 export type UpdatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'> & {
-      tagIds: string[]
+  tagIds: string[]
 }
-
 
 export type UpdatePlaylistRequest = {
   data: {

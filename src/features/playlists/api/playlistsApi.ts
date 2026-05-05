@@ -1,10 +1,11 @@
-import {baseApi} from '@/app/baseApi.ts'
+import { baseApi } from '@/app/baseApi.ts'
 import type {
   CreatePlaylistArgs,
   CreatePlaylistRequest,
   CreatePlaylistResponse,
   PlaylistsResponse,
-  UpdatePlaylistArgs, UpdatePlaylistRequest,
+  UpdatePlaylistArgs,
+  UpdatePlaylistRequest,
 } from '@/features/playlists/api/playlistsApi.types.ts'
 
 export const playlistsApi = baseApi.injectEndpoints({
@@ -15,7 +16,7 @@ export const playlistsApi = baseApi.injectEndpoints({
     // }),
     fetchPlaylists: builder.query<PlaylistsResponse, void>({
       query: () => 'playlists',
-      providesTags: ['Playlists'],
+      providesTags: ['Playlist'],
     }),
 
     createPlaylist: builder.mutation<CreatePlaylistResponse, CreatePlaylistArgs>({
@@ -36,7 +37,7 @@ export const playlistsApi = baseApi.injectEndpoints({
           body,
         }
       },
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
     }),
 
     deletePlaylist: builder.mutation<void, string>({
@@ -46,32 +47,36 @@ export const playlistsApi = baseApi.injectEndpoints({
           method: 'delete',
         }
       },
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
     }),
 
     updatePlaylist: builder.mutation<void, { playlistId: string; body: UpdatePlaylistArgs }>({
       query: ({ playlistId, body }) => {
-
         const requestBody: UpdatePlaylistRequest = {
           data: {
-            type: "playlists",
+            type: 'playlists',
             attributes: {
               title: body.title,
               description: body.description,
-              tagIds: [...body.tagIds]
-            }
-          }
+              tagIds: [...body.tagIds],
+            },
+          },
         }
 
         return {
           url: `playlists/${playlistId}`,
           method: 'put',
-          body: requestBody
+          body: requestBody,
         }
       },
-      invalidatesTags: ['Playlists'],
+      invalidatesTags: ['Playlist'],
     }),
   }),
 })
 
-export const { useFetchPlaylistsQuery, useCreatePlaylistMutation, useDeletePlaylistMutation, useUpdatePlaylistMutation } = playlistsApi
+export const {
+  useFetchPlaylistsQuery,
+  useCreatePlaylistMutation,
+  useDeletePlaylistMutation,
+  useUpdatePlaylistMutation,
+} = playlistsApi
