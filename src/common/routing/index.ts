@@ -1,1 +1,1 @@
-export { Routing } from './Routing';
+export { Routing } from './Routing'
