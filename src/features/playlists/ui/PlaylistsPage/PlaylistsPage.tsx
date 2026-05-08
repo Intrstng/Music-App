@@ -1,7 +1,6 @@
 import {
   useDeletePlaylistMutation,
   useFetchPlaylistsQuery,
-  useUpdatePlaylistMutation,
 } from '@/features/playlists/api/playlistsApi.ts'
 import s from '@/features/playlists/ui/PlaylistsPage/PlaylistsPage.module.css'
 import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx'
@@ -10,7 +9,7 @@ import type {
   UpdatePlaylistArgs,
 } from '@/features/playlists/api/playlistsApi.types.ts'
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { PlaylistItem } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx'
 import { EditPlaylistForm } from '@/features/playlists/ui/PlaylistsPage/EditPlaylistForm/EditPlaylistForm.tsx'
 
@@ -18,7 +17,7 @@ export const PlaylistsPage = () => {
   // const { data } = useFetchPlaylistsQuery({pageSize: 3})
   const { data: playlists } = useFetchPlaylistsQuery()
   const [deletePlaylist] = useDeletePlaylistMutation()
-  const [updatePlaylist] = useUpdatePlaylistMutation()
+  // const [updatePlaylist] = useUpdatePlaylistMutation()
   const [playlistId, setPlaylistId] = useState<string | null>(null)
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
