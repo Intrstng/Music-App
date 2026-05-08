@@ -1,21 +1,23 @@
 export type Tag = {
-  id: string
-  name: string
+    id: string
+    name: string
 }
 
 export type User = {
-  id: string
-  name: string
+    id: string
+    name: string
 }
 
 export type Images = {
-  main: Cover[]
+    main: Cover[]
 }
 
 export type Cover = {
-  type: 'original' | 'medium' | 'thumbnail'
-  width: number
-  height: number
-  fileSize: number
-  url: string
+    type: CoverType
+    width: number
+    height: number
+    fileSize: number
+    url: string
 }
+
+export type CoverType = 'original' | 'medium' | 'thumbnail'

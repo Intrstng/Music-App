@@ -3,11 +3,11 @@ import { baseApi } from '@/app/baseApi.ts'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
 export const store = configureStore({
-  reducer: {
-    // [appSlice.name]: appReducer,
-    [baseApi.reducerPath]: baseApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
+    reducer: {
+        // [appSlice.name]: appReducer,
+        [baseApi.reducerPath]: baseApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 setupListeners(store.dispatch)
