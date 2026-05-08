@@ -40,7 +40,7 @@ export const PlaylistsPage = () => {
     const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.currentTarget.value)
     }
-
+console.log(playlists?.data.length)
     return (
         <div className={s.container}>
             <h1>Playlists page</h1>
@@ -51,12 +51,11 @@ export const PlaylistsPage = () => {
                 placeholder={'Search playlist by title'}
                 onChange={searchPlaylistHandler}
             />
-
+            {!playlists?.data.length && !isLoading && <h2>Playlists not found...</h2>}
             <div className={s.items}>
                 {playlists?.data.map((playlist) => {
                     return (
                         <div className={s.item} key={playlist.id}>
-                            {!playlists?.data.length && !isLoading && <h2>Playlists not found...</h2>}
                             {playlistId === playlist.id ? (
                                 <EditPlaylistForm
                                     playlistId={playlistId}
