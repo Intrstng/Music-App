@@ -7,14 +7,19 @@ import {useForm} from 'react-hook-form'
 import {PlaylistItem} from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx'
 import {EditPlaylistForm} from '@/features/playlists/ui/PlaylistsPage/EditPlaylistForm/EditPlaylistForm.tsx'
 import {useDebounceValue} from "@/common/utils/useDebounceValue.ts";
+import {Pagination} from "@/common/components/Pagination/Pagination.tsx";
 
 export const PlaylistsPage = () => {
-    // const { data } = useFetchPlaylistsQuery({pageSize: 3})
     const [search, setSearch] = useState('')
+    const [currentPage, setCurrentPage] = useState<number>(1)
     const debounceSearch = useDebounceValue(search)
-    const { data: playlists, isLoading } = useFetchPlaylistsQuery({search: debounceSearch})
+    const pageSize = 4
+    // const { data } = useFetchPlaylistsQuery({pageSize: 3})
+    // const { data: playlists, isLoading } = useFetchPlaylistsQuery({search: debounceSearch, pageNumber: 1, pageSize: 4})
+
+    const { data: playlists, isLoading } = useFetchPlaylistsQuery({search: debounceSearch, pageNumber: currentPage, pageSize: pageSize})
+
     const [deletePlaylist] = useDeletePlaylistMutation()
-    // const [updatePlaylist] = useUpdatePlaylistMutation()
     const [playlistId, setPlaylistId] = useState<string | null>(null)
     const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
 
@@ -40,7 +45,11 @@ export const PlaylistsPage = () => {
     const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.currentTarget.value)
     }
-console.log(playlists?.data.length)
+
+    const changePaginationPageHandler = (nextPage: number) => {
+        setCurrentPage(nextPage)
+    }
+
     return (
         <div className={s.container}>
             <h1>Playlists page</h1>
@@ -75,6 +84,7 @@ console.log(playlists?.data.length)
                     )
                 })}
             </div>
+            <Pagination currentPage={currentPage} setCurrentPage={changePaginationPageHandler} pagesCount={playlists?.meta.pagesCount || 1} />
         </div>
     )
 }
