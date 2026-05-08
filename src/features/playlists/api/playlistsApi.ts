@@ -2,7 +2,7 @@ import { baseApi } from '@/app/baseApi.ts'
 import type {
     CreatePlaylistArgs,
     CreatePlaylistRequest,
-    CreatePlaylistResponse,
+    CreatePlaylistResponse, FetchPlaylistsArgs,
     PlaylistsResponse,
     UpdatePlaylistArgs,
     UpdatePlaylistRequest,
@@ -15,8 +15,13 @@ export const playlistsApi = baseApi.injectEndpoints({
         //     query: (args) => `playlists?pageSize=${args.pageSize}`,
         //     providesTags: ["Playlists"],
         // }),
-        fetchPlaylists: builder.query<PlaylistsResponse, void>({
-            query: () => 'playlists',
+        fetchPlaylists: builder.query<PlaylistsResponse, FetchPlaylistsArgs>({
+            query: (parameters) => {
+                return {
+                    url: 'playlists',
+                    params: parameters
+                }
+            },
             providesTags: ['Playlist'],
         }),
 
