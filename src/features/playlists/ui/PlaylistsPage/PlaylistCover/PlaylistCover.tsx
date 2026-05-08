@@ -1,23 +1,26 @@
-import s from "@/features/playlists/ui/PlaylistsPage/PlaylistCover/PlaylistCover.module.css";
-import type {ChangeEvent} from "react";
-import {useDeletePlaylistCoverMutation, useUpdatePlaylistCoverMutation} from "@/features/playlists/api/playlistsApi.ts";
-import defaultCover from "@/assets/images/default-playlist-cover.png";
-import type {Images} from "@/common/types/types.ts";
-import {toast} from "react-toastify";
+import s from '@/features/playlists/ui/PlaylistsPage/PlaylistCover/PlaylistCover.module.css'
+import type { ChangeEvent } from 'react'
+import {
+    useDeletePlaylistCoverMutation,
+    useUpdatePlaylistCoverMutation,
+} from '@/features/playlists/api/playlistsApi.ts'
+import defaultCover from '@/assets/images/default-playlist-cover.png'
+import type { Images } from '@/common/types/types.ts'
+import { toast } from 'react-toastify'
 
 type PlaylistCoverProps = {
     playlistId: string
     images: Images
 }
 
-export const PlaylistCover = ({playlistId, images}: PlaylistCoverProps) => {
+export const PlaylistCover = ({ playlistId, images }: PlaylistCoverProps) => {
     const [uploadCover] = useUpdatePlaylistCoverMutation()
     const [deleteCover] = useDeletePlaylistCoverMutation()
 
     const originalCover = images.main?.find((img) => img.type === 'original')
     const src = originalCover ? originalCover.url : defaultCover
 
-    const notifyAlert = (message: string) => toast(message, { type: 'error', theme: 'colored' });
+    const notifyAlert = (message: string) => toast(message, { type: 'error', theme: 'colored' })
 
     const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const maxSize = 1024 * 1024 // 1 MB
@@ -48,8 +51,12 @@ export const PlaylistCover = ({playlistId, images}: PlaylistCoverProps) => {
     return (
         <div>
             <img src={src} alt={'cover'} width={'100px'} className={s.cover} />
-            <input type="file" accept="image/jpeg,image/png,image/gif" onChange={uploadCoverHandler} />
+            <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                onChange={uploadCoverHandler}
+            />
             {originalCover && <button onClick={() => deleteCoverHandler()}>delete cover</button>}
         </div>
-    );
-};
+    )
+}

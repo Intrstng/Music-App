@@ -2,7 +2,8 @@ import { baseApi } from '@/app/baseApi.ts'
 import type {
     CreatePlaylistArgs,
     CreatePlaylistRequest,
-    CreatePlaylistResponse, FetchPlaylistsArgs,
+    CreatePlaylistResponse,
+    FetchPlaylistsArgs,
     PlaylistsResponse,
     UpdatePlaylistArgs,
     UpdatePlaylistRequest,
@@ -19,7 +20,7 @@ export const playlistsApi = baseApi.injectEndpoints({
             query: (parameters) => {
                 return {
                     url: 'playlists',
-                    params: parameters
+                    params: parameters,
                 }
             },
             providesTags: ['Playlist'],
