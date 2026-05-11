@@ -110,7 +110,7 @@ import {useFetchPlaylistsQuery,} from '@/features/playlists/api/playlistsApi.ts'
 import s from '@/features/playlists/ui/PlaylistsPage/PlaylistsPage.module.css'
 import {CreatePlaylistForm} from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx'
 import {type ChangeEvent, useState} from 'react'
-import {useDebounceValue} from '@/common/utils/useDebounceValue.ts'
+import {useDebounceValue} from '@/common/hooks/useDebounceValue.ts'
 import {Pagination} from '@/common/components/Pagination/Pagination.tsx'
 import {PlaylistsList} from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx";
 
