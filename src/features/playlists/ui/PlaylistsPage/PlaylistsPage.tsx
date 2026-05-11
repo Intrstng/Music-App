@@ -119,7 +119,6 @@ export const PlaylistsPage = () => {
     const [pageSize, setPageSize] = useState(4)
     const [search, setSearch] = useState('')
     const debounceSearch = useDebounceValue(search)
-
     const { data: playlists, isLoading } = useFetchPlaylistsQuery({
         search: debounceSearch,
         pageNumber: currentPage,
@@ -131,26 +130,21 @@ export const PlaylistsPage = () => {
         //     skipPollingIfUnfocused: true, // прекрати делать pooling если не в фокусе
         // }
         )
-
     const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.currentTarget.value)
         setCurrentPage(1)
     }
-
     const changePaginationPageHandler = (nextPage: number) => {
         setCurrentPage(nextPage)
     }
-
     const changePageSizeHandler = (size: number) => {
         setCurrentPage(1)
         setPageSize(size)
     }
-
     return (
         <div className={s.container}>
             <h1>Playlists page</h1>
             <CreatePlaylistForm />
-
             <input
                 type="search"
                 placeholder={'Search playlist by title'}

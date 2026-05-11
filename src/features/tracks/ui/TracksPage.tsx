@@ -1,11 +1,13 @@
 import {useFetchTracksInfiniteQuery} from "@/features/tracks/api/tracksApi.ts";
 import s from "@/features/tracks/ui/TracksPage.module.css";
+import {useEffect, useRef} from "react";
 
 export const TracksPage = () => {
     const { data, isLoading, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
         useFetchTracksInfiniteQuery()
 
-    console.log(data)
+    // Создает ссылку на DOM элемент, который будет "триггером" для автозагрузки
+    const observerRef = useRef<HTMLDivElement>(null)
 
     // const pages = data?.pages.map(page => page.data).flat() || []
     const pages = data?.pages.flatMap((page) => page.data) || []
@@ -15,6 +17,39 @@ export const TracksPage = () => {
             fetchNextPage()
         }
     }
+
+
+    useEffect(() => {
+        // IntersectionObserver отслеживает элементы и сообщает, насколько они видны во viewport
+        // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+        const observer = new IntersectionObserver(
+            entries => {
+                // entries - наблюдаемый элемент
+                if (entries.length > 0 && entries[0].isIntersecting) {
+                    loadMoreHandler()
+                }
+            },
+            {
+                root: null, // Отслеживание относительно окна браузера (viewport). null = весь экран
+                rootMargin: '100px', // Начинать загрузку за 100px до появления элемента
+                threshold: 0.1, // Срабатывать когда 10% элемента становится видимым
+            }
+        )
+
+        const currentObserverRef = observerRef.current
+        if (currentObserverRef) {
+            // начинает наблюдение за элементом
+            observer.observe(currentObserverRef)
+        }
+
+        // Функция очистки - прекращает наблюдение при размонтировании компонента
+        return () => {
+            if (currentObserverRef) {
+                observer.unobserve(currentObserverRef)
+            }
+        }
+    }, [loadMoreHandler])
+
 
     return (
         <div>
@@ -35,17 +70,21 @@ export const TracksPage = () => {
                 })}
             </div>
 
-            {!isLoading && ( // isLoading чтобы не при первой загрузке (отличие от isFetching)
-                <>
-                    {hasNextPage ? (
-                        <button onClick={loadMoreHandler} disabled={isFetching}>
-                            {isFetchingNextPage ? 'Loading...' : 'Load More'}
-                        </button>
+            {hasNextPage && (
+                // Этот элемент отслеживается IntersectionObserver
+                <div ref={observerRef}>
+                    {/*`<div style={{ height: '20px' }} />` создает "невидимую зону" в 20px в конце списка,*/}
+                    {/*при достижении которой автоматически загружаются новые треки. Без размеров*/}
+                    {/*IntersectionObserver не будет работать корректно.*/}
+                    {isFetchingNextPage ? (
+                        <div>Loading more tracks...</div>
                     ) : (
-                        <p>Nothing more to load</p>
+                        <div style={{ height: '20px' }} />
                     )}
-                </>
+                </div>
             )}
+
+            {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
         </div>
     )
 }
