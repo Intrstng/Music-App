@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const baseApi = createApi({
-    reducerPath: 'playlistsApi',
-    tagTypes: ['Playlist'],
+    reducerPath: 'baseApi',
+    tagTypes: ['Auth', 'Playlist', 'Track'],
 
     // keepUnusedDataFor: 5, // время жизни кэша в секундах
     // refetchOnFocus: true, // обновление кэша, т.е. потворный запрос данных при активности вкладки (используется для актуальности данных при переходе между открытыми вкладками с одними  и теме же данными)

@@ -120,7 +120,7 @@ export const PlaylistsPage = () => {
     const [pageSize, setPageSize] = useState(4)
     const [search, setSearch] = useState('')
     const debounceSearch = useDebounceValue(search)
-    const { data: playlists, isLoading, isFetching } = useFetchPlaylistsQuery({
+    const { data: playlists, isLoading } = useFetchPlaylistsQuery({
         search: debounceSearch,
         pageNumber: currentPage,
         pageSize: pageSize,
@@ -158,7 +158,7 @@ export const PlaylistsPage = () => {
                 playlists={playlists?.data || []}
                 isLoading={isLoading}
             />
-            {isFetching && <LinearProgress />}
+            {/*{isFetching && <LinearProgress />} - т.к. теперь isFetching через хук useGlobalLoading глобально*/}
             <Pagination
                 currentPage={currentPage}
                 setCurrentPage={changePaginationPageHandler}
