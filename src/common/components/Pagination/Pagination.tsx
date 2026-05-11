@@ -1,5 +1,6 @@
 import s from './Pagination.module.css'
-import { getPaginationPages } from '@/common/utils/getPaginationPages.ts'
+import {PaginationControls} from "@/common/components/Pagination/PaginationControls/PaginationControls.tsx";
+import {PageSizeSelector} from "@/common/components/Pagination/PageSizeSelector/PageSizeSelector.tsx";
 
 type Props = {
     currentPage: number
@@ -18,42 +19,13 @@ export const Pagination = ({
 }: Props) => {
     if (pagesCount <= 1) return null
 
-    const pages = getPaginationPages(currentPage, pagesCount)
-
     return (
         <div className={s.pagination}>
-            {pages.map((page, idx) =>
-                page === '...' ? (
-                    <span className={s.ellipsis} key={`ellipsis-${idx}`}>
-                        ...
-                    </span>
-                ) : (
-                    <button
-                        key={page}
-                        className={
-                            page === currentPage
-                                ? `${s.pageButton} ${s.pageButtonActive}`
-                                : s.pageButton
-                        }
-                        onClick={() => page !== currentPage && setCurrentPage(Number(page))}
-                        disabled={page === currentPage}
-                        type="button">
-                        {page}
-                    </button>
-                )
-            )}
-
-            <label>
-                Show
-                <select value={pageSize} onChange={e => changePageSize(Number(e.target.value))}>
-                    {[2, 4, 8, 16, 32].map(size => (
-                        <option value={size} key={size}>
-                            {size}
-                        </option>
-                    ))}
-                </select>
-                per page
-            </label>
+            <PaginationControls
+                currentPage={currentPage}
+                pagesCount={pagesCount}
+                setCurrentPage={setCurrentPage} />
+            <PageSizeSelector pageSize={pageSize} changePageSize={changePageSize}/>
         </div>
     )
 }
