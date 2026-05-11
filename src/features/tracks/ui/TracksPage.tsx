@@ -35,7 +35,7 @@ export const TracksPage = () => {
                 })}
             </div>
 
-            {!isLoading && (
+            {!isLoading && ( // isLoading чтобы не при первой загрузке (отличие от isFetching)
                 <>
                     {hasNextPage ? (
                         <button onClick={loadMoreHandler} disabled={isFetching}>
