@@ -1,17 +1,20 @@
-import s from "@/features/playlists/ui/PlaylistsPage/PlaylistsPage.module.css";
-import {EditPlaylistForm} from "@/features/playlists/ui/PlaylistsPage/EditPlaylistForm/EditPlaylistForm.tsx";
-import {PlaylistItem} from "@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx";
-import type {PlaylistData, UpdatePlaylistArgs} from "@/features/playlists/api/playlistsApi.types.ts";
-import {useForm} from "react-hook-form";
-import {useState} from "react";
-import {useDeletePlaylistMutation} from "@/features/playlists/api/playlistsApi.ts";
+import s from '@/features/playlists/ui/PlaylistsPage/PlaylistsPage.module.css'
+import { EditPlaylistForm } from '@/features/playlists/ui/PlaylistsPage/EditPlaylistForm/EditPlaylistForm.tsx'
+import { PlaylistItem } from '@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem.tsx'
+import type {
+    PlaylistData,
+    UpdatePlaylistArgs,
+} from '@/features/playlists/api/playlistsApi.types.ts'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { useDeletePlaylistMutation } from '@/features/playlists/api/playlistsApi.ts'
 
 type PlaylistsListProps = {
     playlists: PlaylistData[]
     isLoading: boolean
 }
 
-export const PlaylistsList = ({playlists, isLoading}: PlaylistsListProps) => {
+export const PlaylistsList = ({ playlists, isLoading }: PlaylistsListProps) => {
     const [deletePlaylist] = useDeletePlaylistMutation()
     const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
     const [playlistId, setPlaylistId] = useState<string | null>(null)
@@ -62,5 +65,5 @@ export const PlaylistsList = ({playlists, isLoading}: PlaylistsListProps) => {
                 })}
             </div>
         </>
-    );
-};
+    )
+}

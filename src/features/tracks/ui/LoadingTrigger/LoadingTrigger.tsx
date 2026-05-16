@@ -12,7 +12,11 @@ export const LoadingTrigger = ({ observerRef, isFetchingNextPage }: Props) => {
             {/*`<div style={{ height: '20px' }} />` создает "невидимую зону" в 20px в конце списка (см.ниже),*/}
             {/*при достижении которой автоматически загружаются новые треки. Без размеров*/}
             {/*IntersectionObserver не будет работать корректно.*/}
-            {isFetchingNextPage ? <div>Loading more tracks...</div> : <div style={{ height: '20px' }} />}
+            {isFetchingNextPage ? (
+                <div>Loading more tracks...</div>
+            ) : (
+                <div style={{ height: '20px' }} />
+            )}
         </div>
     )
 }

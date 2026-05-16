@@ -4,7 +4,7 @@ import { ProfilePage } from '@/features/auth/ui/ProfilePage'
 import { PageNotFound } from '@/common/components'
 import { MainPage } from '@/app/MainPage'
 import { Path } from '@/common/constants'
-import {TracksPage} from "@/features/tracks/ui";
+import { TracksPage } from '@/features/tracks/ui'
 
 export const Routing = () => (
     <Routes>

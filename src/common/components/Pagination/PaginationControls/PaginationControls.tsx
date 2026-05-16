@@ -1,5 +1,5 @@
-import s from "@/common/components/Pagination/PaginationControls/PaginationControls.module.css";
-import {getPaginationPages} from "@/common/utils/getPaginationPages.ts";
+import s from '@/common/components/Pagination/PaginationControls/PaginationControls.module.css'
+import { getPaginationPages } from '@/common/utils/getPaginationPages.ts'
 
 type PaginationControlsProps = {
     currentPage: number
@@ -7,7 +7,11 @@ type PaginationControlsProps = {
     setCurrentPage: (nextPage: number) => void
 }
 
-export const PaginationControls = ({currentPage, pagesCount, setCurrentPage}: PaginationControlsProps) => {
+export const PaginationControls = ({
+    currentPage,
+    pagesCount,
+    setCurrentPage,
+}: PaginationControlsProps) => {
     const pages = getPaginationPages(currentPage, pagesCount)
 
     return (
@@ -33,5 +37,5 @@ export const PaginationControls = ({currentPage, pagesCount, setCurrentPage}: Pa
                 )
             )}
         </>
-    );
-};
+    )
+}

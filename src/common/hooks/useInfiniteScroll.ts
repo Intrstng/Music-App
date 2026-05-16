@@ -1,5 +1,4 @@
-import {useCallback, useEffect, useRef} from "react";
-
+import { useCallback, useEffect, useRef } from 'react'
 
 type InfiniteScrollType = {
     hasNextPage: boolean
@@ -10,13 +9,12 @@ type InfiniteScrollType = {
 }
 
 export function useInfiniteScroll({
-                                      hasNextPage,
-                                      isFetching,
-                                      fetchNextPage,
-                                      rootMargin = '100px',
-                                      threshold = 0.1,
-                                  }: InfiniteScrollType) {
-
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+    rootMargin = '100px',
+    threshold = 0.1,
+}: InfiniteScrollType) {
     const observerRef = useRef<HTMLDivElement>(null)
 
     const loadMoreHandler = useCallback(() => {
@@ -29,7 +27,7 @@ export function useInfiniteScroll({
         // IntersectionObserver отслеживает элементы и сообщает, насколько они видны во viewport
         // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
         const observer = new IntersectionObserver(
-            entries => {
+            (entries) => {
                 // entries - наблюдаемый элемент (всегда массив)
                 if (entries.length > 0 && entries[0].isIntersecting) {
                     loadMoreHandler()

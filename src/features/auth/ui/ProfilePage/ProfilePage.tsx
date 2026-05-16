@@ -1,4 +1,4 @@
-import {useGetMeQuery} from "@/features/auth/api/authApi.ts";
+import { useGetMeQuery } from '@/features/auth/api/authApi.ts'
 
 export const ProfilePage = () => {
     const { data } = useGetMeQuery()

@@ -1,6 +1,6 @@
 import s from './Pagination.module.css'
-import {PaginationControls} from "@/common/components/Pagination/PaginationControls/PaginationControls.tsx";
-import {PageSizeSelector} from "@/common/components/Pagination/PageSizeSelector/PageSizeSelector.tsx";
+import { PaginationControls } from '@/common/components/Pagination/PaginationControls/PaginationControls.tsx'
+import { PageSizeSelector } from '@/common/components/Pagination/PageSizeSelector/PageSizeSelector.tsx'
 
 type Props = {
     currentPage: number
@@ -11,11 +11,11 @@ type Props = {
 }
 
 export const Pagination = ({
-                               currentPage,
-                               setCurrentPage,
-                               changePageSize,
-                               pagesCount,
-                               pageSize
+    currentPage,
+    setCurrentPage,
+    changePageSize,
+    pagesCount,
+    pageSize,
 }: Props) => {
     if (pagesCount <= 1) return null
 
@@ -24,8 +24,9 @@ export const Pagination = ({
             <PaginationControls
                 currentPage={currentPage}
                 pagesCount={pagesCount}
-                setCurrentPage={setCurrentPage} />
-            <PageSizeSelector pageSize={pageSize} changePageSize={changePageSize}/>
+                setCurrentPage={setCurrentPage}
+            />
+            <PageSizeSelector pageSize={pageSize} changePageSize={changePageSize} />
         </div>
     )
 }

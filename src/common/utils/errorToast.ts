@@ -1,4 +1,4 @@
-import {toast} from "react-toastify";
+import { toast } from 'react-toastify'
 
 export const errorToast = (message: string, error?: unknown) => {
     toast(message, { theme: 'colored', type: 'error' })

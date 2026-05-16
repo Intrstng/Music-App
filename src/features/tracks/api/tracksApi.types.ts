@@ -1,5 +1,5 @@
-import type {Images, User} from "@/common/types/types.ts";
-import type {CurrentUserReaction} from "@/common/enums/enums.ts";
+import type { Images, User } from '@/common/types/types.ts'
+import type { CurrentUserReaction } from '@/common/enums/enums.ts'
 
 export type FetchTracksArgs = {
     pageNumber?: number

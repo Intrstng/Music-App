@@ -1,8 +1,8 @@
-import {isErrorWithDetailArray} from "@/common/utils/isErrorWithDetailArray.ts";
-import {trimToMaxLength} from "@/common/utils/trimToMaxLength.ts";
-import {isErrorWithProperty} from "@/common/utils/isErrorWithProperty.ts";
-import type {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {errorToast} from "@/common/utils/errorToast.ts";
+import { isErrorWithDetailArray } from '@/common/utils/isErrorWithDetailArray.ts'
+import { trimToMaxLength } from '@/common/utils/trimToMaxLength.ts'
+import { isErrorWithProperty } from '@/common/utils/isErrorWithProperty.ts'
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import { errorToast } from '@/common/utils/errorToast.ts'
 
 export const handleErrors = (error: FetchBaseQueryError) => {
     if (error) {

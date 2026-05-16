@@ -101,15 +101,14 @@
 // }
 //
 
-
-import {useFetchPlaylistsQuery,} from '@/features/playlists/api/playlistsApi.ts'
+import { useFetchPlaylistsQuery } from '@/features/playlists/api/playlistsApi.ts'
 import s from '@/features/playlists/ui/PlaylistsPage/PlaylistsPage.module.css'
-import {CreatePlaylistForm} from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx'
-import {type ChangeEvent, useEffect, useState} from 'react'
-import {useDebounceValue} from '@/common/hooks/useDebounceValue.ts'
-import {Pagination} from '@/common/components/Pagination/Pagination.tsx'
-import {PlaylistsList} from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx";
-import {toast} from "react-toastify";
+import { CreatePlaylistForm } from '@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx'
+import { type ChangeEvent, useEffect, useState } from 'react'
+import { useDebounceValue } from '@/common/hooks/useDebounceValue.ts'
+import { Pagination } from '@/common/components/Pagination/Pagination.tsx'
+import { PlaylistsList } from '@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx'
+import { toast } from 'react-toastify'
 
 export const PlaylistsPage = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -117,17 +116,23 @@ export const PlaylistsPage = () => {
     const [pageSize, setPageSize] = useState(4)
     const [search, setSearch] = useState('')
     const debounceSearch = useDebounceValue(search)
-    const { data: playlists, isLoading, error, isError } = useFetchPlaylistsQuery({
-        search: debounceSearch,
-        pageNumber: currentPage,
-        pageSize: pageSize,
-    },
+    const {
+        data: playlists,
+        isLoading,
+        error,
+        isError,
+    } = useFetchPlaylistsQuery(
+        {
+            search: debounceSearch,
+            pageNumber: currentPage,
+            pageSize: pageSize,
+        }
         // {
         //     pollingInterval: 3000,  // RTK Query автоматически повторяет запросы через заданный интервал, обновляя данные на клиенте.
         //                             // RTK Query оптимизирует процесс, останавливая запрос, если компонент размонтирован или пользователь не взаимодействует с приложением
         //     skipPollingIfUnfocused: true, // прекрати делать pooling если не в фокусе
         // }
-        )
+    )
     const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.currentTarget.value)
         setCurrentPage(1)
@@ -151,10 +156,7 @@ export const PlaylistsPage = () => {
                 placeholder={'Search playlist by title'}
                 onChange={searchPlaylistHandler}
             />
-            <PlaylistsList
-                playlists={playlists?.data || []}
-                isLoading={isLoading}
-            />
+            <PlaylistsList playlists={playlists?.data || []} isLoading={isLoading} />
             {/*{isFetching && <LinearProgress />} - т.к. теперь isFetching через хук useGlobalLoading глобально*/}
             <Pagination
                 currentPage={currentPage}
