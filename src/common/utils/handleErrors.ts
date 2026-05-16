@@ -1,4 +1,3 @@
-import {toast} from "react-toastify";
 import {isErrorWithDetailArray} from "@/common/utils/isErrorWithDetailArray.ts";
 import {trimToMaxLength} from "@/common/utils/trimToMaxLength.ts";
 import {isErrorWithProperty} from "@/common/utils/isErrorWithProperty.ts";
