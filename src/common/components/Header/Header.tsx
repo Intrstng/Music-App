@@ -8,7 +8,6 @@ const navItems = [
     { to: Path.Main, label: 'Main' },
     { to: Path.Playlists, label: 'Playlists' },
     { to: Path.Tracks, label: 'Tracks' },
-    { to: Path.Profile, label: 'Profile' },
 ]
 
 export const Header = () => {
@@ -53,7 +52,14 @@ export const Header = () => {
             </nav>
             {/*{LoginButton}*/}
             {data ? <div className={s.loginContainer}>
-                        <p>{data.login}</p>
+                    <NavLink
+                        to={Path.Profile}
+                        // className={({ isActive, isPending }) =>
+                        //     isPending ? "pending" : isActive ? "active" : ""
+                        // }
+                    >
+                        {data.login}
+                    </NavLink>
                         <button onClick={logoutHandler}>logout</button>
                     </div>
                   : <Login />}

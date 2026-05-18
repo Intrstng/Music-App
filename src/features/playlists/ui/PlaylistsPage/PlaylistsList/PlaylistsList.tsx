@@ -12,9 +12,10 @@ import { useDeletePlaylistMutation } from '@/features/playlists/api/playlistsApi
 type PlaylistsListProps = {
     playlists: PlaylistData[]
     isLoading: boolean
+    className?: string
 }
 
-export const PlaylistsList = ({ playlists, isLoading }: PlaylistsListProps) => {
+export const PlaylistsList = ({ playlists, isLoading, className }: PlaylistsListProps) => {
     const [deletePlaylist] = useDeletePlaylistMutation()
     const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
     const [playlistId, setPlaylistId] = useState<string | null>(null)
@@ -41,7 +42,7 @@ export const PlaylistsList = ({ playlists, isLoading }: PlaylistsListProps) => {
     return (
         <>
             {!playlists?.length && !isLoading && <h2>Playlists not found...</h2>}
-            <div className={s.items}>
+            <div className={`${className} ${s.items}`}>
                 {playlists?.map((playlist) => {
                     return (
                         <div className={s.item} key={playlist.id}>
