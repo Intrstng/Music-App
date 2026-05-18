@@ -1,11 +1,18 @@
 .container {
+    margin: 0 auto;
     border-bottom: 1px solid black;
-    padding-left: 100px;
+    /*max-width: 1280px;*/
+    /*width: 100%;*/
+    padding: 0 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .list {
     display: flex;
-    gap: 40px;
+    gap: 30px;
+    list-style: none;
 }
 
 .activeLink {

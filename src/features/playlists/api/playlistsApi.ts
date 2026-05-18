@@ -82,7 +82,7 @@ export const playlistsApi = baseApi.injectEndpoints({
         }),
 
         updatePlaylist: builder.mutation<void, { playlistId: string; body: UpdatePlaylistArgs }>({
-               query: ({ playlistId, body }) => {
+            query: ({ playlistId, body }) => {
                 const requestBody: UpdatePlaylistRequest = {
                     data: {
                         type: 'playlists',
@@ -100,13 +100,19 @@ export const playlistsApi = baseApi.injectEndpoints({
                 }
             },
 
-            async onQueryStarted({ playlistId, body }: {playlistId: string, body: UpdatePlaylistArgs}, { queryFulfilled, dispatch, getState }) {
+            async onQueryStarted(
+                { playlistId, body }: { playlistId: string; body: UpdatePlaylistArgs },
+                { queryFulfilled, dispatch, getState }
+            ) {
                 // В args получаем все queryParameters
-                const args = playlistsApi.util.selectCachedArgsForQuery(getState(), 'fetchPlaylists')
+                const args = playlistsApi.util.selectCachedArgsForQuery(
+                    getState(),
+                    'fetchPlaylists'
+                )
 
                 const patchResults: any[] = []
 
-                args.forEach(arg => {
+                args.forEach((arg) => {
                     patchResults.push(
                         dispatch(
                             playlistsApi.util.updateQueryData(
@@ -116,10 +122,15 @@ export const playlistsApi = baseApi.injectEndpoints({
                                     pageSize: arg.pageSize,
                                     search: arg.search,
                                 },
-                                state => {
-                                    const index = state.data.findIndex(playlist => playlist.id === playlistId)
+                                (state) => {
+                                    const index = state.data.findIndex(
+                                        (playlist) => playlist.id === playlistId
+                                    )
                                     if (index !== -1) {
-                                        state.data[index].attributes = { ...state.data[index].attributes, ...body }
+                                        state.data[index].attributes = {
+                                            ...state.data[index].attributes,
+                                            ...body,
+                                        }
                                     }
                                 }
                             )
@@ -130,7 +141,7 @@ export const playlistsApi = baseApi.injectEndpoints({
                 try {
                     await queryFulfilled
                 } catch {
-                    patchResults.forEach(patchResult => {
+                    patchResults.forEach((patchResult) => {
                         patchResult.undo()
                     })
                 }

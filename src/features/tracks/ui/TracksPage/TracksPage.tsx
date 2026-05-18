@@ -4,7 +4,7 @@ import { TracksList } from '@/features/tracks/ui'
 import { LoadingTrigger } from '@/features/tracks/ui/LoadingTrigger/LoadingTrigger.tsx'
 
 export const TracksPage = () => {
-    const { data, isLoading, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    const { data, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } =
         useFetchTracksInfiniteQuery()
 
     // Создает ссылку на DOM элемент, который будет "триггером" для автозагрузки

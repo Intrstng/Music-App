@@ -1,6 +1,8 @@
-import { NavLink } from 'react-router'
+import { Navigate, NavLink, useLocation, useNavigate } from 'react-router'
 import s from './Header.module.css'
 import { Path } from '@/common/constants'
+import { useGetMeQuery } from '@/features/auth/api/authApi.ts'
+import { Login } from '@/features/auth/ui/Login/Login.tsx'
 
 const navItems = [
     { to: Path.Main, label: 'Main' },
@@ -10,6 +12,27 @@ const navItems = [
 ]
 
 export const Header = () => {
+    // const navigate = useNavigate()
+    // const location = useLocation()
+    const { data } = useGetMeQuery()
+
+    // const isLoginPage = location.pathname === Path.Login
+    //
+    // const loginHandler = () => {
+    //     navigate('/login')
+    // }
+
+    // const signOutHandler = () => {
+    //     console.log("signOut")
+    //     //return <Navigate to={'login'}/>
+    // }
+    //
+    // const LoginButton = !isLoginPage && (
+    //     isLoggedIn
+    //         ? <button type={'button'} onClick={signOutHandler}>SignOut</button>
+    //         : <button type={'button'} onClick={loginHandler}>Login</button>
+    // )
+
     return (
         <header className={s.container}>
             <nav>
@@ -27,6 +50,8 @@ export const Header = () => {
                     ))}
                 </ul>
             </nav>
+            {/*{LoginButton}*/}
+            {data ? data.login : <Login />}
         </header>
     )
 }
