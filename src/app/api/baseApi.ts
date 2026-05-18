@@ -1,6 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { handleErrors } from '@/common/utils/handleErrors.ts'
-import {AUTH_KEYS} from "@/common/constants";
+import {createApi} from '@reduxjs/toolkit/query/react'
+import {baseQueryWithReauth} from "@/app/api/baseQueryWithReauth.ts";
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
@@ -13,31 +12,32 @@ export const baseApi = createApi({
     // !!! Но для refetchOnFocus надо добавить setupListeners в store
     // refetchOnReconnect: true, // повторный запрос данных, когда приложение или браузер восстанавливает соединение с интернетом после его потери
 
-    baseQuery: async (args, api, extraOptions) => {
-        const result = await fetchBaseQuery({
-            baseUrl: import.meta.env.VITE_BASE_URL,
-            headers: {
-                'API-KEY': import.meta.env.VITE_API_KEY,
-            },
-            // prepareHeaders: (headers) => {
-            //     headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
-            //     return headers
-            // },
-            prepareHeaders: (headers) => {
-                const accessToken = localStorage.getItem(AUTH_KEYS.accessToken)
-                if (accessToken) {
-                    headers.set('Authorization', `Bearer ${accessToken}`)
-                }
-                return headers
-            },
-        })(args, api, extraOptions)
-
-        if (result.error) {
-            handleErrors(result.error)
-        }
-
-        return result
-    },
+    // baseQuery: async (args, api, extraOptions) => {
+    //     const result = await fetchBaseQuery({
+    //         baseUrl: import.meta.env.VITE_BASE_URL,
+    //         headers: {
+    //             'API-KEY': import.meta.env.VITE_API_KEY,
+    //         },
+    //         // prepareHeaders: (headers) => {
+    //         //     headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
+    //         //     return headers
+    //         // },
+    //         prepareHeaders: (headers) => {
+    //             const accessToken = localStorage.getItem(AUTH_KEYS.accessToken)
+    //             if (accessToken) {
+    //                 headers.set('Authorization', `Bearer ${accessToken}`)
+    //             }
+    //             return headers
+    //         },
+    //     })(args, api, extraOptions)
+    //
+    //     if (result.error) {
+    //         handleErrors(result.error)
+    //     }
+    //
+    //     return result
+    // },
+    baseQuery: baseQueryWithReauth,
 
     endpoints: () => ({}),
 })

@@ -3,6 +3,7 @@ import { trimToMaxLength } from '@/common/utils/trimToMaxLength.ts'
 import { isErrorWithProperty } from '@/common/utils/isErrorWithProperty.ts'
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { errorToast } from '@/common/utils/errorToast.ts'
+import {AUTH_KEYS, AUTH_TOKEN} from "@/common/constants";
 
 export const handleErrors = (error: FetchBaseQueryError) => {
     if (error) {
@@ -15,6 +16,24 @@ export const handleErrors = (error: FetchBaseQueryError) => {
                 break
 
             case 400:
+                // { const refreshToken = localStorage.getItem(AUTH_KEYS.refreshToken)
+                if (isErrorWithDetailArray(error.data)) {
+                    const errorMessage = error.data.errors[0].detail
+                    if (errorMessage.includes('refresh')) return
+                    // при логауте у нас появляется ошибка 400
+                    // т.к. идет refresh запрос с невалидным refresh-токеном
+                    // и чтобы ее не показывать, но сохранить обработку других ошибок 400
+                    // мы отфильтруем ошибки с текстом включающим слово refresh
+                    // т.к. именно в этой ошибке есть текст:
+                    // detail: "refreshToken must be a string; Received value: null".
+                    // Другие ошибки 400 без этого текста будет показывать
+
+                    errorToast(trimToMaxLength(errorMessage))
+                } else {
+                    errorToast(JSON.stringify(error.data))
+                }
+                break
+        // }
             case 403:
                 if (isErrorWithDetailArray(error.data)) {
                     errorToast(trimToMaxLength(error.data.errors[0].detail))
@@ -31,7 +50,7 @@ export const handleErrors = (error: FetchBaseQueryError) => {
                 }
                 break
 
-            case 401:
+            // case 401:
             case 429:
                 if (isErrorWithProperty(error.data, 'message')) {
                     errorToast(error.data.message)

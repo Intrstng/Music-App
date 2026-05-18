@@ -1,4 +1,4 @@
-import { baseApi } from '@/app/baseApi.ts'
+import { baseApi } from '@/app/api/baseApi.ts'
 import type {LoginArgs, LoginResponse, MeResponse, RefreshTokenArg} from '@/features/auth/api/authApi.types.ts'
 import {AUTH_KEYS} from "@/common/constants";
 
@@ -21,15 +21,11 @@ export const authApi = baseApi.injectEndpoints({
                 _args,
               { dispatch, queryFulfilled },
             ) {
-                try {
                     const { data } = await queryFulfilled
                     localStorage.setItem(AUTH_KEYS.accessToken, data.accessToken)
                     localStorage.setItem(AUTH_KEYS.refreshToken, data.refreshToken)
 
                     dispatch(authApi.util.invalidateTags(['Auth'])) // вызываем новый auth me с новым только что сохраненным токеном в localStorage
-                } catch (error) {
-                    console.error('Login failed:', error)
-                }
             },
         }),
 
@@ -51,20 +47,15 @@ export const authApi = baseApi.injectEndpoints({
                 }
             },
 
-
             async onQueryStarted(
                 _args,
                 { dispatch, queryFulfilled },
             ) {
-                try {
                     await queryFulfilled
                     localStorage.removeItem(AUTH_KEYS.accessToken)
                     localStorage.removeItem(AUTH_KEYS.refreshToken)
 
                     dispatch(baseApi.util.resetApiState()) // сбрасываем весь кэш после логаута
-                } catch (error) {
-                    console.error('Logout failed:', error)
-                }
             },
         }),
     }),
