@@ -18,3 +18,9 @@
 .activeLink {
     font-weight: bold;
 }
+
+.loginContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

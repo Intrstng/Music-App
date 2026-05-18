@@ -33,14 +33,41 @@ export const authApi = baseApi.injectEndpoints({
             },
         }),
 
-        refreshToken: builder.mutation<LoginResponse, RefreshTokenArg>({
-            query: (body) => ({
-                url: 'auth/refresh',
-                method: 'Post',
-                body,
-            }),
+        // refreshToken: builder.mutation<LoginResponse, RefreshTokenArg>({
+        //     query: (body) => ({
+        //         url: 'auth/refresh',
+        //         method: 'Post',
+        //         body,
+        //     }),
+        // }),
+        logout: builder.mutation<void, void>({
+            query: () => {
+                const refreshToken = localStorage.getItem(AUTH_KEYS.refreshToken)
+
+                return {
+                    url: 'auth/logout',
+                    method: 'Post',
+                    body: {refreshToken},
+                }
+            },
+
+
+            async onQueryStarted(
+                _args,
+                { dispatch, queryFulfilled },
+            ) {
+                try {
+                    await queryFulfilled
+                    localStorage.removeItem(AUTH_KEYS.accessToken)
+                    localStorage.removeItem(AUTH_KEYS.refreshToken)
+
+                    dispatch(baseApi.util.resetApiState()) // сбрасываем весь кэш после логаута
+                } catch (error) {
+                    console.error('Logout failed:', error)
+                }
+            },
         }),
     }),
 })
 
-export const { useGetMeQuery, useLoginMutation, useRefreshTokenMutation } = authApi
+export const { useGetMeQuery, useLoginMutation, useLogoutMutation } = authApi
