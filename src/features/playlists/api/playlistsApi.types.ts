@@ -10,19 +10,8 @@ export type PlaylistsResponse = z.infer<typeof playlistsResponseSchema>
 export type PlaylistData = z.infer<typeof playlistDataSchema>
 export type PlaylistMeta = z.infer<typeof playlistMetaSchema>
 export type PlaylistAttributes = z.infer<typeof playlistAttributesSchema>
-// export type FetchPlaylistsArgs = z.infer<typeof fetchPlaylistsArgsSchema>
+export type FetchPlaylistsArgs = z.infer<typeof fetchPlaylistsArgsSchema>
 
-// Arguments
-export type FetchPlaylistsArgs = {
-    pageNumber?: number
-    pageSize?: number
-    search?: string
-    sortBy?: 'addedAt' | 'likesCount'
-    sortDirection?: 'asc' | 'desc'
-    tagsIds?: string[]
-    userId?: string
-    trackId?: string
-}
 
 export type CreatePlaylistRequest = {
     data: {
@@ -66,9 +55,14 @@ export type UpdatePlaylistCoverRequest = {
     }
 }
 
-
-
-
-
-
 export type CreatePlaylist = z.infer<typeof createPlaylistSchema>
+
+
+// WebSocket Events
+
+export type PlaylistCreatedEvent = {
+    type: 'tracks.playlist-created'
+    payload: {
+        data: PlaylistData
+    }
+}

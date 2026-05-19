@@ -20,7 +20,7 @@ export const playlistMetaSchema = z.object({
 
 export const playlistAttributesSchema = z.object({
     title: z.any(),
-    // description: z.string(), // текущая API не соответствует варианту из урока
+    description: z.string().optional(), // текущая API не соответствует варианту из урока
     addedAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
     order: z.int(),

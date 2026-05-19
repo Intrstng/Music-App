@@ -3,7 +3,7 @@ import type {
     CreatePlaylistArgs,
     CreatePlaylistRequest,
     CreatePlaylistResponse,
-    FetchPlaylistsArgs,
+    FetchPlaylistsArgs, PlaylistCreatedEvent,
     PlaylistsResponse,
     UpdatePlaylistArgs,
     UpdatePlaylistRequest,
@@ -12,6 +12,7 @@ import type {Images} from '@/common/types/types.ts'
 import {playlistCreateResponseSchema, playlistsResponseSchema} from "@/features/playlists/model/playlists.schemas.ts";
 import {imagesSchema} from "@/common/schemas/schemas.ts";
 import {withZodCatch} from "@/common/utils/withZodCatch.ts";
+import {io, Socket} from "socket.io-client";
 
 export const playlistsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -37,6 +38,40 @@ export const playlistsApi = baseApi.injectEndpoints({
             skipSchemaValidation: process.env.NODE_ENV === 'production',
             // отключить zod валидацию на продакшене для уменьшения бандла
             // и увеличения скорости выполнения кода
+            //
+            //
+            // Websocket
+            keepUnusedDataFor: 0, // 👈 очистка сразу после размонтирования
+            async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
+                // Ждем разрешения начального запроса перед продолжением
+                await cacheDataLoaded // ждем выполнения query в fetchPlaylists
+
+                // Создаем Socket.IO соединение с сервером
+                const socket: Socket = io('https://musicfun.it-incubator.app', {
+                    path: '/api/1.0/ws', // переопределяем пользовательский путь для Socket.IO сервера (по умолчанию '/socket.io/')
+                    transports: ['websocket'],
+                })
+
+                socket.on('connect', () => console.log('✅ Подключен к серверу'))
+
+                socket.on('tracks.playlist-created', (msg: PlaylistCreatedEvent) => {
+                    // 1 вариант
+                    const newPlaylist = msg.payload.data
+                    updateCachedData(state => { // далее меняем данные в кэше
+                        state.data.pop() // т.к. у нас на бэкенде лимит на 10 своих созданных плейлистов
+                        state.data.unshift(newPlaylist)
+                        state.meta.totalCount = state.meta.totalCount + 1
+                        state.meta.pagesCount = Math.ceil(state.meta.totalCount / state.meta.pageSize)
+                    })
+                    // 2 вариант
+                    // dispatch(playlistsApi.util.invalidateTags(['Playlist']))
+                })
+
+                // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
+                await cacheEntryRemoved // закрываем соединение
+                // Выполняем шаги очистки после разрешения промиса `cacheEntryRemoved`
+                socket.on('disconnect', () => console.log('❌ Соединение разорвано'))
+            },
 
             providesTags: ['Playlist'],
         }),
