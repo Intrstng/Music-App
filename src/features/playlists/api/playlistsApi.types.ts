@@ -1,40 +1,16 @@
-import type { CoverType, Images, Tag, User } from '@/common/types/types.ts'
-import type { CurrentUserReaction } from '@/common/enums/enums.ts'
+import type {Cover} from '@/common/types/types.ts'
+import {
+    createPlaylistSchema, fetchPlaylistsArgsSchema,
+    playlistAttributesSchema, playlistDataSchema,
+    playlistMetaSchema, playlistsResponseSchema
+} from "@/features/playlists/model/playlists.schemas.ts";
+import {z} from "zod/v4";
 
-export type PlaylistsResponse = {
-    data: PlaylistData[]
-    meta: PlaylistMeta
-}
-
-export type PlaylistData = {
-    id: string
-    type: 'playlists'
-    attributes: PlaylistAttributes
-}
-
-export type PlaylistMeta = {
-    page: number
-    pageSize: number
-    totalCount: number
-    pagesCount: number
-}
-
-export type PlaylistAttributes = {
-    title: string
-    description: string
-    addedAt: string
-    updatedAt: string
-    order: number
-    dislikesCount: number
-    likesCount: number
-    tags: Tag[]
-    images: Images
-    user: User
-    currentUserReaction: CurrentUserReaction
-    // Added for mutation queries
-    tracksCount?: number
-    duration?: number
-}
+export type PlaylistsResponse = z.infer<typeof playlistsResponseSchema>
+export type PlaylistData = z.infer<typeof playlistDataSchema>
+export type PlaylistMeta = z.infer<typeof playlistMetaSchema>
+export type PlaylistAttributes = z.infer<typeof playlistAttributesSchema>
+// export type FetchPlaylistsArgs = z.infer<typeof fetchPlaylistsArgsSchema>
 
 // Arguments
 export type FetchPlaylistsArgs = {
@@ -55,13 +31,19 @@ export type CreatePlaylistRequest = {
     }
 }
 
-export type CreatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'>
+// export type CreatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'>
+export type CreatePlaylistArgs = z.infer<typeof createPlaylistSchema>
 
 export type CreatePlaylistResponse = {
     data: PlaylistData
 }
 
-export type UpdatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'> & {
+// export type UpdatePlaylistArgs = Pick<PlaylistAttributes, 'title' | 'description'> & {
+//     tagIds: string[]
+// }
+export type UpdatePlaylistArgs = {
+    title: string
+    description: string
     tagIds: string[]
 }
 
@@ -76,10 +58,17 @@ export type UpdatePlaylistRequest = {
 
 export type UpdatePlaylistCoverRequest = {
     main: {
-        type: CoverType
+        type: Cover
         width: number
         height: number
         fileSize: number
         url: string
     }
 }
+
+
+
+
+
+
+export type CreatePlaylist = z.infer<typeof createPlaylistSchema>

@@ -1,11 +1,16 @@
-import { baseApi } from '@/app/api/baseApi.ts'
-import type {LoginArgs, LoginResponse, MeResponse, RefreshTokenArg} from '@/features/auth/api/authApi.types.ts'
+import {baseApi} from '@/app/api/baseApi.ts'
+import type {LoginArgs, LoginResponse, MeResponse} from '@/features/auth/api/authApi.types.ts'
 import {AUTH_KEYS} from "@/common/constants";
+import {withZodCatch} from "@/common/utils/withZodCatch.ts";
+import {loginResponseSchema, meResponseSchema} from "@/features/auth/model/auth.schemas.ts";
 
 export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getMe: builder.query<MeResponse, void>({
             query: () => ({ url: 'auth/me' }),
+
+            ...withZodCatch(meResponseSchema),
+
             providesTags: ['Auth'],
         }),
 
@@ -27,6 +32,8 @@ export const authApi = baseApi.injectEndpoints({
 
                     dispatch(authApi.util.invalidateTags(['Auth'])) // вызываем новый auth me с новым только что сохраненным токеном в localStorage
             },
+
+            ...withZodCatch(loginResponseSchema),
         }),
 
         // refreshToken: builder.mutation<LoginResponse, RefreshTokenArg>({
@@ -51,11 +58,16 @@ export const authApi = baseApi.injectEndpoints({
                 _args,
                 { dispatch, queryFulfilled },
             ) {
+                try {
                     await queryFulfilled
                     localStorage.removeItem(AUTH_KEYS.accessToken)
                     localStorage.removeItem(AUTH_KEYS.refreshToken)
 
                     dispatch(baseApi.util.resetApiState()) // сбрасываем весь кэш после логаута
+                } catch(e) {
+                    console.log('Error', e) // временный костыль
+                }
+
             },
         }),
     }),

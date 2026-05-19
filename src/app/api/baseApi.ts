@@ -38,6 +38,9 @@ export const baseApi = createApi({
     //     return result
     // },
     baseQuery: baseQueryWithReauth,
+    skipSchemaValidation: process.env.NODE_ENV === 'production',
+    // отключить zod валидацию на продакшене для уменьшения бандла
+    // и увеличения скорости выполнения кода
 
     endpoints: () => ({}),
 })

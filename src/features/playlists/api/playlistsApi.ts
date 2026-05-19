@@ -1,4 +1,4 @@
-import { baseApi } from '@/app/api/baseApi.ts'
+import {baseApi} from '@/app/api/baseApi.ts'
 import type {
     CreatePlaylistArgs,
     CreatePlaylistRequest,
@@ -8,7 +8,10 @@ import type {
     UpdatePlaylistArgs,
     UpdatePlaylistRequest,
 } from '@/features/playlists/api/playlistsApi.types.ts'
-import type { Images } from '@/common/types/types.ts'
+import type {Images} from '@/common/types/types.ts'
+import {playlistCreateResponseSchema, playlistsResponseSchema} from "@/features/playlists/model/playlists.schemas.ts";
+import {imagesSchema} from "@/common/schemas/schemas.ts";
+import {withZodCatch} from "@/common/utils/withZodCatch.ts";
 
 export const playlistsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -23,6 +26,18 @@ export const playlistsApi = baseApi.injectEndpoints({
                     params: parameters,
                 }
             },
+
+            // responseSchema: playlistsResponseSchema,
+            // catchSchemaFailure: err => {
+            //     errorToast('Zod error. Details in the console', err.issues)
+            //     return { status: 'CUSTOM_ERROR', error: 'Schema validation failed' }
+            // },
+            ...withZodCatch(playlistsResponseSchema),
+
+            skipSchemaValidation: process.env.NODE_ENV === 'production',
+            // отключить zod валидацию на продакшене для уменьшения бандла
+            // и увеличения скорости выполнения кода
+
             providesTags: ['Playlist'],
         }),
 
@@ -44,6 +59,15 @@ export const playlistsApi = baseApi.injectEndpoints({
                     body,
                 }
             },
+
+            // responseSchema: playlistCreateResponseSchema,
+            // catchSchemaFailure: err => {
+            //     errorToast('Zod error. Details in the console', err.issues)
+            //     return { status: 'CUSTOM_ERROR', error: 'Schema validation failed' }
+            // },
+            ...withZodCatch(playlistCreateResponseSchema),
+
+
             invalidatesTags: ['Playlist'],
         }),
 
@@ -58,6 +82,17 @@ export const playlistsApi = baseApi.injectEndpoints({
                     body: formData,
                 }
             },
+
+            // responseSchema: imagesSchema,
+            // catchSchemaFailure: err => {
+            //     errorToast('Zod error. Details in the console', err.issues)
+            //     return { status: 'CUSTOM_ERROR', error: 'Schema validation failed' }
+            // },
+            ...withZodCatch(imagesSchema),
+
+
+
+
             invalidatesTags: ['Playlist'],
         }),
 
@@ -68,6 +103,11 @@ export const playlistsApi = baseApi.injectEndpoints({
                     method: 'delete',
                 }
             },
+
+            // Если бэкенд ничего не возвращает, значит и валидировать ничего не нужно.
+            // Соответственно эндпоинты deletePlaylist, updatePlaylist и deletePlaylistCover
+            // оставляем как есть.
+
             invalidatesTags: ['Playlist'],
         }),
 

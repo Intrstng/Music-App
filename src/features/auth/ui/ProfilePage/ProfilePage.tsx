@@ -2,7 +2,7 @@ import {useGetMeQuery} from '@/features/auth/api/authApi.ts'
 import {useFetchPlaylistsQuery} from "@/features/playlists/api/playlistsApi.ts";
 import {PlaylistsList} from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx";
 import {Pagination} from "@/common/components/Pagination/Pagination.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import s from './ProfilePage.module.css'
 import {CreatePlaylistForm} from "@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm.tsx";
 import {Navigate} from "react-router";

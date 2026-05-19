@@ -1,0 +1,9 @@
+.errorMessage {
+    color: red;
+    font-size: 14px;
+}
+
+.form {
+    max-width: 300px;
+    width: 100%;
+}

@@ -1,23 +1,8 @@
-export type Tag = {
-    id: string
-    name: string
-}
+import {coverSchema, currentUserReactionSchema, imagesSchema, tagSchema, userSchema} from "@/common/schemas/schemas.ts";
+import {z} from "zod/v4";
 
-export type User = {
-    id: string
-    name: string
-}
-
-export type Images = {
-    main: Cover[]
-}
-
-export type Cover = {
-    type: CoverType
-    width: number
-    height: number
-    fileSize: number
-    url: string
-}
-
-export type CoverType = 'original' | 'medium' | 'thumbnail'
+export type Tag  = z.infer<typeof tagSchema>
+export type User  = z.infer<typeof userSchema>
+export type Images = z.infer<typeof imagesSchema>
+export type Cover = z.infer<typeof coverSchema>
+export type CurrentUserReaction = z.infer<typeof currentUserReactionSchema>

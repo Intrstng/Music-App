@@ -1,9 +1,8 @@
-import { isErrorWithDetailArray } from '@/common/utils/isErrorWithDetailArray.ts'
-import { trimToMaxLength } from '@/common/utils/trimToMaxLength.ts'
-import { isErrorWithProperty } from '@/common/utils/isErrorWithProperty.ts'
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
-import { errorToast } from '@/common/utils/errorToast.ts'
-import {AUTH_KEYS, AUTH_TOKEN} from "@/common/constants";
+import {isErrorWithDetailArray} from '@/common/utils/isErrorWithDetailArray.ts'
+import {trimToMaxLength} from '@/common/utils/trimToMaxLength.ts'
+import {isErrorWithProperty} from '@/common/utils/isErrorWithProperty.ts'
+import type {FetchBaseQueryError} from '@reduxjs/toolkit/query'
+import {errorToast} from '@/common/utils/errorToast.ts'
 
 export const handleErrors = (error: FetchBaseQueryError) => {
     if (error) {
@@ -27,7 +26,6 @@ export const handleErrors = (error: FetchBaseQueryError) => {
                     // т.к. именно в этой ошибке есть текст:
                     // detail: "refreshToken must be a string; Received value: null".
                     // Другие ошибки 400 без этого текста будет показывать
-
                     errorToast(trimToMaxLength(errorMessage))
                 } else {
                     errorToast(JSON.stringify(error.data))
